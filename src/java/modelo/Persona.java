@@ -29,9 +29,15 @@ public Persona(){
              
 }
 
+public Persona (String dui, String apellidos , String nombres){
+    this.dui = dui;
+    this.apellido = apellidos;
+    this.nombres = nombres ;
+}
+
 public boolean  insertarDatos(){
     try{
-        String miQuery = "insert into tb-persona value (´"+dui + "´,´"+apellido+"´,´"+nombres+"´);";
+        String miQuery = "insert into tb_persona values ('" + dui + "', '" + apellido + "','" + nombres + "');";
         int estado = 0; //estado de la insecion
         state = cnn.createStatement();
         estado = state.executeUpdate(miQuery);
@@ -43,7 +49,28 @@ public boolean  insertarDatos(){
     }
     return false;
     
-}  
+    
+}
+ 
+public ArrayList<Persona> consultarRegistros(){
+    ArrayList<Persona> person =new ArrayList (); //*crear el array del almacenamiento de tipo persona
+    try{
+    String miQuery = "select * from tb_persona:";//*definir la consulta
+    state =cnn.createStatement();//*crear el,boton para la consulta
+    result = state.executeQuery(miQuery);//* ejecutar consulta
+    while(result.next()){//*recoger todo el Resultset y almacena en cada fila los requisitos encontrados
+    
+        person.add(new Persona(result.getString("dui_persona"), result.getString("apellido_persona"), result.getString("nombre_Persona")));
+    }
+    } catch (SQLException ex) {
+        Logger.getLogger(Persona.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return person;
+    
+
+}
+
+
 //***************************************************
 
 //generar los metodos set y get para los atributos
@@ -73,7 +100,8 @@ public void setApellidos(String apellidos) {
     
     //constructor vacio de la clase tipo publico
 //El constructor lo utilizaremos para conectar con la base de datos.
-
+    
+   
     
 }
 
